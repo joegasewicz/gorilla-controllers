@@ -1,5 +1,5 @@
 # Gorilla Controllers
-Use controllers in the Gorilla Mux library
+Use controllers with the Gorilla Mux library
 
 #### Why controllers?
 Gorilla's mux library is a brilliant fully featured mux tool, Gorilla Controllers is a library that replaces the HandleFunc
