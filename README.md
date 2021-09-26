@@ -3,7 +3,7 @@ Use controllers in the Gorilla Mux library
 
 #### Why controllers?
 Gorilla's mux library is a brilliant fully featured mux tool, Gorilla Controllers is a library that replaces the HandleFunc
-with a `Controller` function & a `Templates` function. This way you only need to mage your data inside your controller, 
+with a `Controller` function & a `Templates` function. This way you only need to manage your data inside your controller, 
 all your template setup logic is now handled by Gorilla Controllers.
 
 ### Basic Usage
