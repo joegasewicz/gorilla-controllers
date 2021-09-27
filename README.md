@@ -29,7 +29,7 @@ baseTemplates := []string{
 }
 
 r := mux.NewRouter()
-g := helpers.NewGorillaControllers(r, baseTemplates)
+g := helpers.New(r, baseTemplates)
 
 
 g.Route("/")
