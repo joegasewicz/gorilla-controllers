@@ -22,7 +22,7 @@ func Home(w http.ResponseWriter, r *http.Request, data *map[string]interface{}) 
 Library Setup
 ```go
 baseTemplates := []string{
-    "./templates/layout.html",
+    "./templates/layout.html", // You must always call your base html file "layout"
     "./templates/sidebar.html",
     "./templates/navbar.html",
     "./templates/footer.html",
