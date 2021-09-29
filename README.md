@@ -35,6 +35,6 @@ g := gorillacontrollers.New(r, baseTemplates)
 g.Route("/")
     .Controller(Home) // Controller now replaces Gorilla's HandleFunc
     .Methods("GET", "POST")
-    .Templates("home.html") // If you do not call Templates() then you must call Init() instead
+    .Templates("./templates/home.html") // If you do not call Templates() then you must call Init() instead
 
 ```
