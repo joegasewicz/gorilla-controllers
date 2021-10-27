@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	gorillacontrollers "github.com/joegasewicz/gorilla-controllers"
-	"net/http"
 	"testing"
 )
 
@@ -28,7 +27,7 @@ func tearDown() {
 
 func TestNew(t *testing.T) {
 	setUp()
-	g := gorillacontrollers.New(r, baseTemplates)
+	g := gorillacontrollers.New(r, baseTemplates, "layout")
 	if len(g.BaseTemplates) != 4 {
 		t.Errorf("Expected '%v' to be length '%v'", len(g.BaseTemplates), 4)
 	}
@@ -37,7 +36,7 @@ func TestNew(t *testing.T) {
 
 func TestRoute(t *testing.T) {
 	setUp()
-	g := gorillacontrollers.New(r, baseTemplates)
+	g := gorillacontrollers.New(r, baseTemplates, "layout")
 	g.Route("/")
 	if g.CurrentRoute != "/" {
 		t.Errorf("Expected '%v' route but got '%v'", "/", g.CurrentRoute)
@@ -47,7 +46,7 @@ func TestRoute(t *testing.T) {
 
 func TestController(t *testing.T) {
 	setUp()
-	g := gorillacontrollers.New(r, baseTemplates)
+	g := gorillacontrollers.New(r, baseTemplates, "layout")
 	_ = g.Controller(Basic)
 	chType := fmt.Sprintf("%T", g.CurrentHandler)
 	if chType != "func(http.ResponseWriter, *http.Request, *map[string]interface {})" {
@@ -58,7 +57,7 @@ func TestController(t *testing.T) {
 
 func TestMethods(t *testing.T) {
 	setUp()
-	g := gorillacontrollers.New(r, baseTemplates)
+	g := gorillacontrollers.New(r, baseTemplates, "layout")
 	_ = g.Methods("GET")
 	if g.CurrentMethods[0] != "GET" {
 		t.Errorf("Expected '%v' bit got '%v", "GET", g.CurrentMethods[0])
@@ -74,7 +73,7 @@ func TestMethods(t *testing.T) {
 
 func TestTemplates(t *testing.T) {
 	setUp()
-	g := gorillacontrollers.New(r, baseTemplates)
+	g := gorillacontrollers.New(r, baseTemplates, "layout")
 	_ = g.Templates("index.html")
 	if g.CurrentTemplates[0] != "index.html" {
 		t.Errorf("g.CurrentTemplates does not contain the correct value")
@@ -84,7 +83,7 @@ func TestTemplates(t *testing.T) {
 
 func TestInit(t *testing.T) {
 	setUp()
-	g := gorillacontrollers.New(r, baseTemplates)
+	g := gorillacontrollers.New(r, baseTemplates, "layout")
 	g.Route("/").Controller(Basic).Methods("GET", "POST").Init()
 	if g.CurrentRoute != "/" && g.CurrentMethods[1] != "POST" {
 		t.Errorf("g.Init dit not add correct values to GorillaControllers struct")
