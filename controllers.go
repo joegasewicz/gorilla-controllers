@@ -7,22 +7,25 @@ import (
 	"text/template"
 )
 
+type CurrentHandler func(http.ResponseWriter, *http.Request, *map[string]interface{})
+
 type GorillaControllers struct {
 	CurrentRoute     string
-	CurrentHandler   func(http.ResponseWriter, *http.Request, *map[string]interface{})
+	CurrentHandler   CurrentHandler
 	CurrentMethods   []string
 	CurrentTemplates []string
 	BaseTemplates    []string
 	// Generic router e.g Gorilla's *mux.Router
-	r *mux.Router
+	r            *mux.Router
+	TemplateName string
 }
 
-func handleFuncWrapper(h func(http.ResponseWriter, *http.Request, *map[string]interface{}), t *GTemplate, templatePath []string) http.HandlerFunc {
+func handleFuncWrapper(g *GorillaControllers, t *GTemplate) http.HandlerFunc {
 	var data map[string]interface{}
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Create CurrentTemplates here if exist
-		h(w, r, &data)
-		templates := t.GTemplates(templatePath...)
+		g.CurrentHandler(w, r, &data)
+		templates := t.GTemplates(g.CurrentTemplates...)
 		te, err := template.ParseFiles(templates...)
 		if err != nil {
 			log.Fatalf(err.Error())
@@ -35,16 +38,22 @@ func create(g *GorillaControllers) {
 	t := GTemplate{
 		BaseTemplates: g.BaseTemplates,
 	}
-	g.r.HandleFunc(g.CurrentRoute, handleFuncWrapper(g.CurrentHandler, &t, g.CurrentTemplates)).Methods(g.CurrentMethods...)
+	g.r.HandleFunc(g.CurrentRoute, handleFuncWrapper(g, &t)).Methods(g.CurrentMethods...)
+	//	g.r.HandleFunc(g.CurrentRoute, handleFuncWrapper(g.CurrentHandler, &t, g.CurrentTemplates)).Methods(g.CurrentMethods...)
 }
 
-func New(r *mux.Router, baseTemplates []string) *GorillaControllers {
+// New Returns a pointer to a GorillaControllers struct.
+// r - pointer to Gorilla's mux.Router
+// baseTemplates - is a list of relative paths to your templates
+// templateName - is the name of the base template file e.g 'layout' for 'layout.html'
+func New(r *mux.Router, baseTemplates []string, templateName string) *GorillaControllers {
 	return &GorillaControllers{
 		CurrentRoute:   "",
 		CurrentHandler: nil,
 		CurrentMethods: nil,
 		BaseTemplates:  baseTemplates,
 		r:              r,
+		TemplateName:   templateName,
 	}
 }
 
