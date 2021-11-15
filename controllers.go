@@ -20,11 +20,12 @@ type GorillaControllers struct {
 	TemplateName string
 }
 
-func handleFuncWrapper(g *GorillaControllers, t *GTemplate) http.HandlerFunc {
+func handleFuncWrapper(g *GorillaControllers, t *GTemplate, h CurrentHandler) http.HandlerFunc {
 	var data map[string]interface{}
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Create CurrentTemplates here if exist
-		g.CurrentHandler(w, r, &data)
+		h(w, r, &data)
 		templates := t.GTemplates(g.CurrentTemplates...)
 		te, err := template.ParseFiles(templates...)
 		if err != nil {
@@ -38,7 +39,8 @@ func create(g *GorillaControllers) {
 	t := GTemplate{
 		BaseTemplates: g.BaseTemplates,
 	}
-	g.r.HandleFunc(g.CurrentRoute, handleFuncWrapper(g, &t)).Methods(g.CurrentMethods...)
+	handler := g.CurrentHandler
+	g.r.HandleFunc(g.CurrentRoute, handleFuncWrapper(g, &t, handler)).Methods(g.CurrentMethods...)
 }
 
 // New Returns a pointer to a GorillaControllers struct.
