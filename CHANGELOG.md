@@ -5,6 +5,9 @@
 
 ### Changed
 
+**Release v0.2.1** - 2021-11-19
+- Template strings are not persisted 🪲 [Issue #13](https://github.com/joegasewicz/gorilla-controllers/issues/13)
+
 **Release v0.2.0** - 2021-11-15
 - Register controllers 🪲 [Issue #10](https://github.com/joegasewicz/gorilla-controllers/issues/10)
 
