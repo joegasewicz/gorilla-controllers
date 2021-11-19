@@ -22,19 +22,19 @@ func Home(w http.ResponseWriter, r *http.Request, data *map[string]interface{}) 
 Library Setup
 ```go
 baseTemplates := []string{
-    "./templates/layout.html", // You must always call your base html file "layout"
+    "./templates/layout.html",
     "./templates/sidebar.html",
     "./templates/navbar.html",
     "./templates/footer.html",
 }
 
 r := mux.NewRouter()
-g := gorillacontrollers.New(r, baseTemplates, "layout")
+g := gorillacontrollers.New(r, baseTemplates, "layout") // "layout" is your base template
 
 
 g.Route("/")
     .Controller(Home) // Controller now replaces Gorilla's HandleFunc
     .Methods("GET", "POST")
-    .Templates("./templates/home.html") // If you do not call Templates() then you must call Init() instead
+    .Templates("./templates/navbar.html", "./templates/home.html") // If you do not call Templates() then you must call Init() instead
 
 ```
