@@ -17,3 +17,6 @@
 - Handler type added
 
 ### Unreleased
+**Release v0.2.2** - 2021-11-19
+- README should include correct instructions for Base template is dynamic  🪲 [Issue #16](https://github.com/joegasewicz/gorilla-controllers/issues/16)
+
